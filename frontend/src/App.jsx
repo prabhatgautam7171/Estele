@@ -1,39 +1,21 @@
-import BudgetSection from "./components/BudgetSection";
-import CategorySection from "./components/Category";
-import CelebritySection from "./components/CelebritySection";
-import FeaturesSection from "./components/Features";
-import Footer from "./components/Footer";
-import Hero from "./components/Hero";
-import Navbar from "./components/Navbar";
-import Newsletter from "./components/NewsLetter";
-import ProductCollection from "./components/ProductCollection";
-import CustomerReviews from "./components/Reviews";
-import RoseGoldCollection from "./components/RoseGoldCollection";
-import SaleBar from "./components/Salebar";
-import ShopByCollection from "./components/ShopByCollection";
-import StoreSection from "./components/StoreSection";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import SignIn from "./components/auth/SignIn";
+import Home from "./components/Home";
+import VerifyOTP from "./components/auth/VerifyOTP";
+import Products from "./pages/Products";
 
 function App() {
   return (
-    <div className="min-h-screen bg-white">
-        <SaleBar />
-      <Navbar />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-      <main>
-        <Hero />
-        <CategorySection />
-        <RoseGoldCollection />
-        <ProductCollection />
-        <ShopByCollection />
-        <BudgetSection />
-        <CelebritySection />
-        <StoreSection/>
-        <CustomerReviews />
-        <FeaturesSection />
-        <Newsletter/>
-        <Footer/>
-      </main>
-    </div>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
+        <Route path="/products" element={<Products />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

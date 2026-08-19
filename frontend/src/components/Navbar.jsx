@@ -8,12 +8,12 @@ import {
   Menu,
   X,
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const navItems = [
     {
       label: "HASLI COLLECTION",
@@ -104,45 +104,46 @@ const Navbar = () => {
 
             <div className="flex gap-5 bg-[#DEC37D]  rounded-r-[16px] border border-[#dcae70] px-[17px] h-[40px]">
 
-            {/* Wishlist */}
-            <button
-              type="button"
-              className="relative flex items-center justify-center"
-            >
-              <Heart
-                size={20}
-                strokeWidth={1.5}
-                className="text-[#202020]"
-              />
-            </button>
+              {/* Wishlist */}
+              <button
+                type="button"
+                className="relative flex items-center justify-center"
+              >
+                <Heart
+                  size={20}
+                  strokeWidth={1.5}
+                  className="text-[#202020]"
+                />
+              </button>
 
-            {/* Cart */}
-            <button
-              type="button"
-              className="relative flex items-center justify-center"
-            >
-              <ShoppingBag
-                size={20}
-                strokeWidth={1.5}
-                className="text-[#202020]"
-              />
+              {/* Cart */}
+              <button
+                type="button"
+                className="relative flex items-center justify-center"
+              >
+                <ShoppingBag
+                  size={20}
+                  strokeWidth={1.5}
+                  className="text-[#202020]"
+                />
 
-              <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
-                1
-              </span>
-            </button>
+                <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
+                  1
+                </span>
+              </button>
 
-            {/* Account */}
-            <button
-              type="button"
-              className="flex items-center justify-center"
-            >
-              <UserRound
-                size={20}
-                strokeWidth={1.5}
-                className="text-[#202020]"
-              />
-            </button>
+              {/* Account */}
+              <button
+                onClick={() => navigate("/signin")}
+                type="button"
+                className="flex items-center justify-center"
+              >
+                <UserRound
+                  size={20}
+                  strokeWidth={1.5}
+                  className="text-[#202020]"
+                />
+              </button>
 
             </div>
           </div>

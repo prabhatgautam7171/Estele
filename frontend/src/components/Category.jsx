@@ -1,53 +1,59 @@
-import { useState } from "react";
-
-const categories = [
-  {
-    name: "MAANG TIKKA",
-    image: "https://placehold.co/500x500/f6d8dc/777?text=Maang+Tikka",
-  },
-  {
-    name: "MANGALSUTRA",
-    image: "https://placehold.co/500x500/f4d2d8/777?text=Mangalsutra",
-  },
-  {
-    name: "NECKLACE SET",
-    image: "https://placehold.co/500x500/f7dce0/777?text=Necklace+Set",
-  },
-  {
-    name: "PENDANT SETS",
-    image: "https://placehold.co/500x500/f5d5da/777?text=Pendant+Sets",
-  },
-  {
-    name: "EARRINGS",
-    image: "https://placehold.co/500x500/f3d1d6/777?text=Earrings",
-  },
-  {
-    name: "FINGER RINGS",
-    image: "https://placehold.co/500x500/f7dfe2/777?text=Finger+Rings",
-  },
-  {
-    name: "BRACELETS",
-    image: "https://placehold.co/500x500/f5d6dc/777?text=Bracelets",
-  },
-  {
-    name: "BANGLES",
-    image: "https://placehold.co/500x500/f3d0d6/777?text=Bangles",
-  },
-  {
-    name: "NOSE PINS",
-    image: "https://placehold.co/500x500/f7dce1/777?text=Nose+Pins",
-  },
-  {
-    name: "ANKLETS",
-    image: "https://placehold.co/500x500/f4d3d9/777?text=Anklets",
-  },
-];
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CategorySection = () => {
+  const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const itemsPerPage = 8;
-  const totalPages = Math.ceil(categories.length / itemsPerPage);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/categories",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        console.log("Categories API:", data);
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Failed to fetch categories."
+          );
+        }
+
+        setCategories(data.categories || []);
+      } catch (error) {
+        console.error("Category API error:", error);
+
+        setError(
+          error.message || "Unable to load categories."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const totalPages = Math.ceil(
+    categories.length / itemsPerPage
+  );
 
   const visibleCategories = categories.slice(
     page * itemsPerPage,
@@ -61,47 +67,79 @@ const CategorySection = () => {
         SHOP BY CATEGORY
       </h2>
 
-      {/* Categories */}
-      <div className="mx-auto flex max-w-[1200px] gap-[15px] overflow-hidden">
-        {visibleCategories.map((category) => (
-          <div
-            key={category.name}
-            className="min-w-0 flex-1 overflow-hidden rounded-[16px] bg-white"
-          >
-            {/* Image */}
-            <div className="aspect-square w-full overflow-hidden">
-              <img
-                src={category.image}
-                alt={category.name}
-                className="h-full w-full object-cover"
-              />
-            </div>
+      {/* Loading */}
+      {loading && (
+        <div className="flex min-h-[250px] items-center justify-center">
+          <p className="text-[14px] text-[#777]">
+            Loading categories...
+          </p>
+        </div>
+      )}
 
-            {/* Category name */}
-            <div className="flex h-[55px] items-center justify-center bg-white px-2">
-              <span className="text-center font-serif text-[14px] font-normal tracking-wide text-[#555]">
-                {category.name}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Error */}
+      {!loading && error && (
+        <div className="flex min-h-[250px] items-center justify-center">
+          <p className="text-[14px] text-red-500">
+            {error}
+          </p>
+        </div>
+      )}
+
+      {/* Categories */}
+      {!loading && !error && (
+        <div className="mx-auto grid max-w-[1200px] grid-cols-8 gap-[15px] overflow-hidden">
+          {visibleCategories.map((category) => {
+            console.log("CATEGORY:", category);
+
+            return (
+              <div
+                key={category.id}
+                onClick={() => navigate(`/products?category=${category.slug}`)}
+                className="min-w-0 cursor-pointer overflow-hidden rounded-[16px] bg-white"
+              >
+                <div className="aspect-square w-full overflow-hidden">
+                  <img
+                    src={`http://127.0.0.1:8000${category.image}`}
+                    alt={category.name}
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    onLoad={() =>
+                      console.log("IMAGE LOADED:", category.image)
+                    }
+                    onError={() =>
+                      console.log("IMAGE FAILED:", category.image)
+                    }
+                  />
+                </div>
+
+                <div className="flex h-[55px] items-center justify-center bg-white px-2">
+                  <span className="text-center font-serif text-[14px] font-normal tracking-wide text-[#555]">
+                    {category.name}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Pagination */}
-      <div className="mt-[28px] flex items-center justify-center gap-[8px]">
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setPage(index)}
-            aria-label={`Category page ${index + 1}`}
-            className={`h-[11px] rounded-full transition-all duration-300 ${
-              page === index
-                ? "w-[40px] bg-[#222]"
-                : "w-[11px] bg-[#999]"
-            }`}
-          />
-        ))}
-      </div>
+      {!loading && !error && totalPages > 1 && (
+        <div className="mt-[28px] flex items-center justify-center gap-[8px]">
+          {Array.from({ length: totalPages }).map(
+            (_, index) => (
+              <button
+                key={index}
+                onClick={() => setPage(index)}
+                aria-label={`Category page ${index + 1}`}
+                className={`h-[11px] rounded-full transition-all duration-300 ${page === index
+                  ? "w-[40px] bg-[#222]"
+                  : "w-[11px] bg-[#999]"
+                  }`}
+              />
+            )
+          )}
+        </div>
+      )}
     </section>
   );
 };
