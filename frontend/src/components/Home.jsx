@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SaleBar from './Salebar'
 import Hero from './Hero'
 import CategorySection from './Category'
@@ -13,12 +13,14 @@ import FeaturesSection from './Features'
 import Newsletter from './NewsLetter'
 import Footer from './Footer'
 import Navbar from './Navbar'
+import CartSidebar from './CartSidebar'
 
 const Home = () => {
+  const [cartOpen, setCartOpen] = useState(false);
   return (
     <div className="min-h-screen bg-white">
       <SaleBar />
-      <Navbar />
+      <Navbar onCartClick={() => setCartOpen(true)} />
 
       <main>
         <Hero />
@@ -34,7 +36,14 @@ const Home = () => {
         <Newsletter />
         <Footer />
       </main>
+
+      <CartSidebar
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+      />
     </div>
+
+
   )
 }
 

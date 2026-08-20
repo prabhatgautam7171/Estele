@@ -104,7 +104,7 @@ const SignIn = () => {
       fontSize: "16px",
       fontWeight: 500,
       color: "#ffffff",
-      cursor: "pointer",
+      cursor: "none",
       transition: "background 0.2s ease",
       marginBottom: "20px",
     },
@@ -214,7 +214,7 @@ const SignIn = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.brand}>Estele</div>
+      <div  style={styles.brand}>Estele</div>
 
       <div style={styles.card}>
         <h1 style={styles.title}>Sign in</h1>

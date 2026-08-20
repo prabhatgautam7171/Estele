@@ -11,41 +11,51 @@ import {
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
 
-const Navbar = () => {
+const Navbar = ({ onCartClick }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const navItems = [
     {
       label: "HASLI COLLECTION",
       badge: "NEW",
+      link: "https://estele.co/collections/hasli-collection"
     },
     {
       label: "CRYSTAL BLOOMS",
+      link : "https://estele.co/collections/crystal-blooms"
     },
     {
       label: "RAKHI GIFT GUIDE",
       badge: "RAKHI SPECIAL",
+     link : "https://estele.co/collections/rakhi-gifting-guide"
     },
     {
       label: "NEW ARRIVALS",
+      link : "https://estele.co/collections/new-arrivals"
     },
     {
       label: "SITARA COLLECTION",
+      link : "https://estele.co/collections/sitara"
     },
     {
       label: "WEDDING SEASON",
+      link : "https://estele.co/collections/wedding-collection"
     },
     {
       label: "NECKLACES",
+      link : "https://estele.co/collections/all-jewellery"
     },
     {
       label: "CATEGORIES",
+      link : "https://estele.co/collections/categories"
     },
     {
       label: "BEST SELLER",
+      link : "https://estele.co/collections/best-seller"
     },
     {
       label: "COLLECTIONS",
+      link : "https://estele.co/collections/collection-1"
     },
   ];
 
@@ -118,6 +128,7 @@ const Navbar = () => {
 
               {/* Cart */}
               <button
+               onClick={onCartClick}
                 type="button"
                 className="relative flex items-center justify-center"
               >
@@ -177,7 +188,7 @@ const Navbar = () => {
               )}
 
               <span className="whitespace-nowrap text-[12px] font-medium leading-[20px] tracking-[-0.25px] text-[#151515]">
-                {item.label}
+                <a href={item.link}> {item.label}</a>
               </span>
             </div>
           ))}

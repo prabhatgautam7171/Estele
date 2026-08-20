@@ -28,6 +28,12 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
+    // use Illuminate\Database\Eloquent\Relations\HasOne;
+
+    public function cart(): HasOne
+       {
+    return $this->hasOne(Cart::class);
+     }
 
     /**
      * Get the attributes that should be cast.

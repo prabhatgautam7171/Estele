@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const API_URL = "http://127.0.0.1:8000";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
-
+  const navigate = useNavigate();
   const category = searchParams.get("category");
 
   const [products, setProducts] = useState([]);
@@ -67,7 +67,8 @@ const Products = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="overflow-hidden rounded-[16px] bg-[#f8f8f8]"
+              onClick={() => navigate(`/products/${product.id}`)}
+              className="cursor-pointer overflow-hidden rounded-[16px] bg-[#f8f8f8]"
             >
               <div className="aspect-square overflow-hidden">
                 <img
@@ -81,7 +82,7 @@ const Products = () => {
                 />
               </div>
 
-              <div className="bg-[#DEC37D] p-4">
+              <div className="bg-white p-4">
                 <h2 className="text-[14px] font-medium text-[#333]">
                   {product.name}
                 </h2>

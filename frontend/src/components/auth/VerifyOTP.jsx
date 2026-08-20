@@ -13,6 +13,9 @@ const VerifyOTP = () => {
   const [resending, setResending] = useState(false);
   const [countdown, setCountdown] = useState(30);
 
+  // NEW: State for success popup
+  const [popupVisible, setPopupVisible] = useState(false);
+
   const inputRefs = useRef([]);
 
   // If user directly opens /verify-otp without coming from signin
@@ -130,8 +133,14 @@ const VerifyOTP = () => {
         );
       }
 
-      // Redirect to homepage
-      navigate("/", { replace: true });
+      // ---- NEW: Show success popup instead of immediate redirect ----
+      setPopupVisible(true);
+
+      // Redirect after popup animation (2.5s)
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 2500);
+
     } catch (error) {
       console.error("OTP verification error:", error);
 
@@ -313,84 +322,163 @@ const VerifyOTP = () => {
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.brand}>Estele</div>
+    <>
+      {/* ---- NEW: CSS for popup animations ---- */}
+      <style>{`
+        @keyframes popupFadeIn {
+          0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes popupFadeOut {
+          0% { opacity: 1; transform: scale(1) translateY(0); }
+          100% { opacity: 0; transform: scale(0.8) translateY(20px); }
+        }
+        @keyframes backdropFadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        .popup-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.4);
+          backdrop-filter: blur(6px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+          animation: backdropFadeIn 0.3s ease forwards;
+        }
+        .popup-box {
+          background: white;
+          border-radius: 28px;
+          padding: 48px 40px 40px;
+          max-width: 360px;
+          width: 90%;
+          text-align: center;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+          animation: popupFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .popup-box.closing {
+          animation: popupFadeOut 0.35s ease forwards;
+        }
+        .popup-check {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: #34c759;
+          margin-bottom: 20px;
+          font-size: 40px;
+          color: white;
+        }
+        .popup-title {
+          font-size: 22px;
+          font-weight: 700;
+          color: #1d1d1f;
+          margin-bottom: 6px;
+        }
+        .popup-message {
+          font-size: 15px;
+          color: #6e6e73;
+          margin-bottom: 0;
+        }
+      `}</style>
 
-      <div style={styles.card}>
-        <h1 style={styles.title}>
-          Verify your email
-        </h1>
+      <div style={styles.container}>
+        <div style={styles.brand}>Estele</div>
 
-        <p style={styles.subtitle}>
-          We sent a 6-digit verification code to
-        </p>
+        <div style={styles.card}>
+          <h1 style={styles.title}>
+            Verify your email
+          </h1>
 
-        <p style={styles.email}>{email}</p>
+          <p style={styles.subtitle}>
+            We sent a 6-digit verification code to
+          </p>
 
-        <form onSubmit={handleSubmit}>
-          <div style={styles.otpContainer}>
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                ref={(element) => {
-                  inputRefs.current[index] = element;
-                }}
-                type="text"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                style={styles.otpInput}
-                onChange={(e) =>
-                  handleChange(index, e.target.value)
-                }
-                onKeyDown={(e) =>
-                  handleKeyDown(index, e)
-                }
-                onPaste={handlePaste}
-                autoFocus={index === 0}
-              />
-            ))}
+          <p style={styles.email}>{email}</p>
+
+          <form onSubmit={handleSubmit}>
+            <div style={styles.otpContainer}>
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(element) => {
+                    inputRefs.current[index] = element;
+                  }}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  style={styles.otpInput}
+                  onChange={(e) =>
+                    handleChange(index, e.target.value)
+                  }
+                  onKeyDown={(e) =>
+                    handleKeyDown(index, e)
+                  }
+                  onPaste={handlePaste}
+                  autoFocus={index === 0}
+                />
+              ))}
+            </div>
+
+            {error && (
+              <p style={styles.error}>{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={styles.continueButton}
+            >
+              {loading ? "Verifying..." : "Verify"}
+            </button>
+          </form>
+
+          <div style={styles.resendContainer}>
+            Didn't receive the code?
+
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={countdown > 0 || resending}
+              style={styles.resendButton}
+            >
+              {resending
+                ? "Sending..."
+                : countdown > 0
+                ? `Resend in ${countdown}s`
+                : "Resend OTP"}
+            </button>
           </div>
-
-          {error && (
-            <p style={styles.error}>{error}</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            style={styles.continueButton}
-          >
-            {loading ? "Verifying..." : "Verify"}
-          </button>
-        </form>
-
-        <div style={styles.resendContainer}>
-          Didn't receive the code?
 
           <button
             type="button"
-            onClick={handleResend}
-            disabled={countdown > 0 || resending}
-            style={styles.resendButton}
+            style={styles.changeEmail}
+            onClick={() => navigate("/signin")}
           >
-            {resending
-              ? "Sending..."
-              : countdown > 0
-              ? `Resend in ${countdown}s`
-              : "Resend OTP"}
+            Change email
           </button>
         </div>
-
-        <button
-          type="button"
-          style={styles.changeEmail}
-          onClick={() => navigate("/signin")}
-        >
-          Change email
-        </button>
       </div>
-    </div>
+
+      {/* ---- NEW: Success Popup ---- */}
+      {popupVisible && (
+        <div className="popup-overlay" onClick={() => {}}>
+          <div className="popup-box">
+            <div className="popup-check">✓</div>
+            <div className="popup-title">Verified!</div>
+            <div className="popup-message">Your email has been confirmed.<br />Redirecting to dashboard…</div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

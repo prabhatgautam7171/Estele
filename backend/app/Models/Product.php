@@ -17,6 +17,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class Product extends Model
 {
+
+  // use Illuminate\Database\Eloquent\Relations\HasMany;
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
