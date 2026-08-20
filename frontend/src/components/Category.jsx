@@ -87,7 +87,7 @@ const CategorySection = () => {
 
       {/* Categories */}
       {!loading && !error && (
-        <div className="mx-auto grid max-w-[1200px] grid-cols-8 gap-[15px] overflow-hidden">
+        <div className="mx-auto grid max-w-[1200px] lg:grid-cols-8  gap-[15px] overflow-hidden">
           {visibleCategories.map((category) => {
             console.log("CATEGORY:", category);
 
@@ -95,7 +95,7 @@ const CategorySection = () => {
               <div
                 key={category.id}
                 onClick={() => navigate(`/products?category=${category.slug}`)}
-                className="min-w-0 cursor-pointer overflow-hidden rounded-[16px] bg-white"
+                className="min-w-0 cursor-pointer overflow-hidden rounded-[16px]  bg-white"
               >
                 <div className="aspect-square w-full overflow-hidden">
                   <img

@@ -31,9 +31,9 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="w-full bg-white px-[35px] ">
+    <section className="w-full bg-white lg:px-[35px] ">
       {/* Banner */}
-      <div className="relative aspect-[2.50/1] w-full overflow-hidden rounded-[30px]">
+      <div className="relative aspect-[2.50/1] w-full overflow-hidden lg:rounded-[30px] ">
         {/* Slides */}
         <div
           className="flex h-full transition-transform duration-700 ease-in-out"
@@ -59,12 +59,12 @@ const Hero = () => {
         <button
           onClick={previousSlide}
           aria-label="Previous slide"
-          className="absolute left-[17px] top-1/2 flex h-[40px] w-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform duration-200 hover:scale-105"
+          className="absolute left-[17px] top-1/2 flex h-[40px] w-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-white-100 border border-white transition-transform duration-200 hover:scale-105"
         >
           <ChevronLeft
             size={20}
             strokeWidth={1.5}
-            className="text-[#333]"
+            className="text-[#ffffff]"
           />
         </button>
 
@@ -72,12 +72,12 @@ const Hero = () => {
         <button
           onClick={nextSlide}
           aria-label="Next slide"
-          className="absolute right-[17px] top-1/2 flex h-[40px] w-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-white transition-transform duration-200 hover:scale-105"
+          className="absolute right-[17px] top-1/2 flex h-[40px] w-[40px] -translate-y-1/2 items-center justify-center rounded-full bg-white-100 border border-white transition-transform duration-200 hover:scale-105"
         >
           <ChevronRight
             size={20}
             strokeWidth={1.5}
-            className="text-[#333]"
+            className="text-[#ffffff]"
           />
         </button>
       </div>

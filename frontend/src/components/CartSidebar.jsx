@@ -40,6 +40,19 @@ const CartSidebar = ({ isOpen, onClose }) => {
         const data = await getCart();
 
         setCart(data.cart);
+
+        // ---- SAVE CART DATA TO localStorage ----
+      if (data.cart) {
+        const cartData = {
+          items: data.cart.items || [],
+          totalItems: data.cart.totalItems || 0,
+          subtotal: data.cart.items?.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ) || 0,
+        };
+        localStorage.setItem("cartData", JSON.stringify(cartData));
+      }
       } catch (error) {
         console.error("CART ERROR:", error);
         setError(error.message);
@@ -145,7 +158,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
           flex
           h-screen
           w-full
-          max-w-[430px]
+          lg:max-w-[430px]
           flex-col
           bg-white
           shadow-[-10px_0_40px_rgba(0,0,0,0.12)]

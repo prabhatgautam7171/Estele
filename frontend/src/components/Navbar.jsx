@@ -12,6 +12,10 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
 
 const Navbar = ({ onCartClick }) => {
+  const cartData = JSON.parse(localStorage.getItem("cartData"));
+  const cartItems = cartData?.items.length || 0;
+
+  console.log(cartItems)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const navItems = [
@@ -22,40 +26,40 @@ const Navbar = ({ onCartClick }) => {
     },
     {
       label: "CRYSTAL BLOOMS",
-      link : "https://estele.co/collections/crystal-blooms"
+      link: "https://estele.co/collections/crystal-blooms"
     },
     {
       label: "RAKHI GIFT GUIDE",
       badge: "RAKHI SPECIAL",
-     link : "https://estele.co/collections/rakhi-gifting-guide"
+      link: "https://estele.co/collections/rakhi-gifting-guide"
     },
     {
       label: "NEW ARRIVALS",
-      link : "https://estele.co/collections/new-arrivals"
+      link: "https://estele.co/collections/new-arrivals"
     },
     {
       label: "SITARA COLLECTION",
-      link : "https://estele.co/collections/sitara"
+      link: "https://estele.co/collections/sitara"
     },
     {
       label: "WEDDING SEASON",
-      link : "https://estele.co/collections/wedding-collection"
+      link: "https://estele.co/collections/wedding-collection"
     },
     {
       label: "NECKLACES",
-      link : "https://estele.co/collections/all-jewellery"
+      link: "https://estele.co/collections/all-jewellery"
     },
     {
       label: "CATEGORIES",
-      link : "https://estele.co/collections/categories"
+      link: "https://estele.co/collections/categories"
     },
     {
       label: "BEST SELLER",
-      link : "https://estele.co/collections/best-seller"
+      link: "https://estele.co/collections/best-seller"
     },
     {
       label: "COLLECTIONS",
-      link : "https://estele.co/collections/collection-1"
+      link: "https://estele.co/collections/collection-1"
     },
   ];
 
@@ -128,7 +132,7 @@ const Navbar = ({ onCartClick }) => {
 
               {/* Cart */}
               <button
-               onClick={onCartClick}
+                onClick={onCartClick}
                 type="button"
                 className="relative flex items-center justify-center"
               >
@@ -139,7 +143,7 @@ const Navbar = ({ onCartClick }) => {
                 />
 
                 <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
-                  1
+                  {cartItems || 0}
                 </span>
               </button>
 
@@ -233,7 +237,7 @@ const Navbar = ({ onCartClick }) => {
           {/* Mobile Actions */}
           <div className="ml-auto flex items-center gap-3 sm:gap-4">
             {/* Search */}
-            <button
+            {/* <button
               type="button"
               aria-label="Search"
               className="flex items-center justify-center"
@@ -243,13 +247,13 @@ const Navbar = ({ onCartClick }) => {
                 strokeWidth={1.5}
                 className="text-[#202020]"
               />
-            </button>
+            </button> */}
 
             {/* Wishlist */}
             <button
               type="button"
               aria-label="Wishlist"
-              className="hidden items-center justify-center sm:flex"
+              className="items-center justify-center sm:flex"
             >
               <Heart
                 size={20}
@@ -260,6 +264,7 @@ const Navbar = ({ onCartClick }) => {
 
             {/* Cart */}
             <button
+            onClick={onCartClick}
               type="button"
               aria-label="Shopping bag"
               className="relative flex items-center justify-center"
@@ -271,15 +276,16 @@ const Navbar = ({ onCartClick }) => {
               />
 
               <span className="absolute -right-[7px] -top-[7px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#cf718e] text-[9px] font-medium text-white">
-                1
+                {cartItems || 0}
               </span>
             </button>
 
             {/* Account */}
             <button
+               onClick={() => navigate("/signin")}
               type="button"
               aria-label="Account"
-              className="hidden items-center justify-center sm:flex"
+              className="items-center justify-center sm:flex"
             >
               <UserRound
                 size={20}
@@ -291,8 +297,8 @@ const Navbar = ({ onCartClick }) => {
         </div>
 
         {/* Mobile Search Bar */}
-        <div className="px-4 pb-3 sm:px-6">
-          <div className="flex h-[40px] w-full items-center gap-3 rounded-[12px] border border-[#dcae70] bg-white/30 px-4">
+        <div className="flex justify-center px-10 pb-3 sm:px-6">
+          <div className="flex h-[40px] w-full items-center justify-center gap-3 rounded-[16px] border border-[#dcae70] bg-[#DEC37D] px-4 py-5">
             <Search
               size={18}
               strokeWidth={1.5}
