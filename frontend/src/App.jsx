@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import VerifyOTP from "./components/auth/VerifyOTP";
 import Products from "./pages/Products";
 import ProductsDetails from "./pages/ProductsDetails";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           path="/products/:id"
           element={<ProductsDetails />}
         />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
+
     </BrowserRouter>
   );
 }

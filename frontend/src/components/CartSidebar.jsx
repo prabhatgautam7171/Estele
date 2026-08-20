@@ -12,8 +12,10 @@ import {
   updateCartItem,
   removeFromCart,
 } from "../api/cart";
+import { useNavigate } from "react-router-dom";
 
 const CartSidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(false);
   const [updatingItem, setUpdatingItem] = useState(null);
@@ -402,6 +404,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
               </p>
 
               <button
+                onClick={() => navigate(`/checkout`)}
                 type="button"
                 className="
                   w-full
@@ -416,7 +419,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   hover:bg-[#444]
                 "
               >
-                PROCEED TO CHECKOUT 
+                PROCEED TO CHECKOUT
               </button>
             </div>
           )}
