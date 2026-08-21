@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCategories } from "../api/categories";
 
 const CategorySection = () => {
   const [categories, setCategories] = useState([]);
@@ -16,21 +17,13 @@ const CategorySection = () => {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          "http://127.0.0.1:8000/api/categories",
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
+        const response = await getCategories();
 
-        const data = await response.json();
+        const data = await response;
 
         console.log("Categories API:", data);
 
-        if (!response.ok || !data.success) {
+        if (!response || !data.success) {
           throw new Error(
             data.message || "Failed to fetch categories."
           );
@@ -94,7 +87,7 @@ const CategorySection = () => {
             return (
               <div
                 key={category.id}
-                onClick={() => navigate(`/products?category=${category.slug}`)}
+                onClick={() => navigate(`/products?category=${category.id}`)}
                 className="min-w-0 cursor-pointer overflow-hidden rounded-[16px]  bg-white"
               >
                 <div className="aspect-square w-full overflow-hidden">

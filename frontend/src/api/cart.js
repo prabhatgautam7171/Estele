@@ -1,4 +1,6 @@
-const API_URL = "http://127.0.0.1:8000/api";
+import api from "./axios";
+
+const API_URL = "https://estele-s2gj.onrender.com/api";
 
 const getToken = () => localStorage.getItem("token");
 

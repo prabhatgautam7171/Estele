@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { getCategoryProducts } from "../api/categories";
+import Navbar from "../components/Navbar";
 const API_URL = "http://127.0.0.1:8000";
 
 const Products = () => {
@@ -18,17 +20,19 @@ const Products = () => {
         setLoading(true);
         setError("");
 
-        const url = category
-          ? `${API_URL}/api/products?category=${encodeURIComponent(category)}`
-          : `${API_URL}/api/products`;
+        // const url = category
+        //   ? `${API_URL}/api/products?category=${encodeURIComponent(category)}`
+        //   : `${API_URL}/api/products`;
 
-        const response = await fetch(url);
+        console.log(category)
 
-        if (!response.ok) {
+        const response = await getCategoryProducts(category);
+
+        if (!response) {
           throw new Error("Failed to fetch products");
         }
 
-        const data = await response.json();
+        const data = await response;
 
         console.log("PRODUCTS:", data);
 
@@ -45,9 +49,10 @@ const Products = () => {
   }, [category]);
 
   return (
-    <div className="min-h-screen bg-white px-6 py-10">
+    <div className="min-h-screen bg-white  py-10">
+
       <h1 className="mb-8 text-center text-[#DEC37D] text-3xl font-serif uppercase">
-        {category ? category.replace("-", " ") : "All Products"}
+        All Products
       </h1>
 
       {loading && (

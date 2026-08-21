@@ -141,10 +141,11 @@ const Navbar = ({ onCartClick }) => {
                   strokeWidth={1.5}
                   className="text-[#202020]"
                 />
-
+                 {  cartItems > 0 &&
                 <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
                   {cartItems || 0}
                 </span>
+}
               </button>
 
               {/* Account */}
@@ -275,9 +276,12 @@ const Navbar = ({ onCartClick }) => {
                 className="text-[#202020]"
               />
 
-              <span className="absolute -right-[7px] -top-[7px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#cf718e] text-[9px] font-medium text-white">
-                {cartItems || 0}
-              </span>
+               {  cartItems > 0 &&
+                  <span className="absolute -right-[7px] -top-[7px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#cf718e] text-[9px] font-medium text-white">
+                  {cartItems}
+                </span>
+               }
+
             </button>
 
             {/* Account */}

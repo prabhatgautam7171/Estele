@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { verifyOtp } from "../../api/auth";
 
 const VerifyOTP = () => {
   const navigate = useNavigate();
@@ -99,26 +100,13 @@ const VerifyOTP = () => {
     setError("");
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/auth/verify-otp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            otp: otpValue,
-          }),
-        }
-      );
+      const response = await verifyOtp(email, otpValue);
 
-      const data = await response.json();
+      const data = response;
 
-      if (!response.ok || !data.success) {
+      if (!response || !data.success) {
         throw new Error(
-          data.message || "Invalid or expired OTP."
+          data?.message || "Invalid or expired OTP."
         );
       }
 

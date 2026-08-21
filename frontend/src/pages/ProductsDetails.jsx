@@ -17,6 +17,8 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../api/cart";
+import { getProduct } from "../api/products";
+import Navbar from "../components/Navbar";
 
 const API_URL = "http://127.0.0.1:8000";
 
@@ -68,13 +70,13 @@ const ProductsDetails = () => {
         setLoading(true);
         setError("");
 
-        const response = await fetch(`${API_URL}/api/products/${id}`);
+        const response = await getProduct(id);
 
-        if (!response.ok) {
+        if (!response) {
           throw new Error("Product not found");
         }
 
-        const data = await response.json();
+        const data = await response;
 
         console.log("PRODUCT DETAILS:", data);
 
@@ -155,7 +157,8 @@ const ProductsDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white px-5 pb-20 pt-8 md:px-10 lg:px-[6%]">
+    <div className="min-h-screen bg-white px-5 pb-20 pt-8 md:px-10 ">
+       
       <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-10 lg:grid-cols-[1.05fr_1fr]">
 
         {/* ================================================= */}

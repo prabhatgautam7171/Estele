@@ -158,7 +158,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
           flex
           h-screen
           w-full
-          lg:max-w-[430px]
+          
+          lg:max-w-[400px]
           flex-col
           bg-white
           shadow-[-10px_0_40px_rgba(0,0,0,0.12)]

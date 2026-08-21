@@ -9,12 +9,24 @@ export const sendOtp = async (email) => {
 };
 
 export const verifyOtp = async (email, otp) => {
-  const response = await api.post("/auth/verify-otp", {
-    email,
-    otp,
-  });
+  try {
+    console.log('otp', otp);
+    const response = await api.post("/auth/verify-otp", {
+      email,
+      otp,
+    });
 
-  return response.data;
+    console.log(response)
+
+    return response.data;
+  } catch (error) {
+    console.error("OTP verification error:", error);
+
+    console.log("STATUS:", error.response?.status);
+    console.log("DATA:", error.response?.data);
+    console.log("VALIDATION ERRORS:", error.response?.data?.errors);
+  }
+
 };
 
 export const getCurrentUser = async () => {

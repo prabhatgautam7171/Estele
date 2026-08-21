@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sendOtp } from "../../api/auth";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -18,23 +19,11 @@ const SignIn = () => {
     setError("");
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/auth/send-otp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email,
-          }),
-        }
-      );
+      const response = await sendOtp(email)
 
-      const data = await response.json();
+      const data = await response;
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error(data.message || "Failed to send OTP.");
       }
 
