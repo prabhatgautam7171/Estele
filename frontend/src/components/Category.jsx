@@ -92,7 +92,7 @@ const CategorySection = () => {
               >
                 <div className="aspect-square w-full overflow-hidden">
                   <img
-                    src={`http://127.0.0.1:8000${category.image}`}
+                    src={`https://estele-s2gj.onrender.com${category.image}`}
                     alt={category.name}
                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     onLoad={() =>
