@@ -6,6 +6,8 @@ import VerifyOTP from "./components/auth/VerifyOTP";
 import Products from "./pages/Products";
 import ProductsDetails from "./pages/ProductsDetails";
 import Checkout from "./pages/Checkout";
+import AdminSignIn from "./components/admin/SignIn";
+import AdminRegister from "./components/admin/Register";
 
 function App() {
   return (
@@ -15,6 +17,17 @@ function App() {
 
         <Route path="/signin" element={<SignIn />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
+
+        <Route
+          path="/admin/login"
+          element={<AdminSignIn />}
+        />
+
+        <Route
+          path="/admin/register"
+          element={<AdminRegister />}
+        />
+
         <Route path="/products" element={<Products />} />
         <Route
           path="/products/:id"

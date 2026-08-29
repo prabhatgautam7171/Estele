@@ -7,6 +7,7 @@ import {
   MapPin,
   Menu,
   X,
+  Lock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
@@ -155,6 +156,18 @@ const Navbar = ({ onCartClick }) => {
                 className="flex items-center justify-center"
               >
                 <UserRound
+                  size={20}
+                  strokeWidth={1.5}
+                  className="text-[#202020]"
+                />
+              </button>
+
+              <button
+                onClick={() => navigate("/admin/login")}
+                type="button"
+                className="flex items-center justify-center"
+              >
+                <Lock
                   size={20}
                   strokeWidth={1.5}
                   className="text-[#202020]"
