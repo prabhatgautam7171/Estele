@@ -57,7 +57,14 @@ const Dashboard = () => {
       const response = await getAdminOrders();
       const ordersData = response?.orders || response?.data || [];
 
-      setOrders(Array.isArray(ordersData) ? ordersData : []);
+      const normalizedOrders = Array.isArray(ordersData)
+        ? ordersData.map((order) => ({
+          ...order,
+          total_amount: Number(order.total_amount) || 0,
+        }))
+        : [];
+
+      setOrders(normalizedOrders);
     } catch (err) {
       console.error("Failed to load admin orders:", err);
       setError(err.response?.data?.message || "Unable to load dashboard data.");
@@ -85,14 +92,19 @@ const Dashboard = () => {
   const totalRevenue = useMemo(
     () =>
       orders
-        .filter((o) => o.status === "delivered")
-        .reduce((sum, o) => sum + (o.total_amount || 0), 0),
+        .filter((o) => o.status?.toLowerCase() === "delivered")
+        .reduce((sum, o) => sum + Number(o.total_amount || 0), 0),
     [orders]
   );
 
   const avgOrderValue = useMemo(() => {
     if (!totalOrders) return 0;
-    const sum = orders.reduce((s, o) => s + (o.total_amount || 0), 0);
+
+    const sum = orders.reduce(
+      (s, o) => s + Number(o.total_amount || 0),
+      0
+    );
+
     return sum / totalOrders;
   }, [orders, totalOrders]);
 
@@ -127,45 +139,91 @@ const Dashboard = () => {
   // 7-day delivered-revenue sparkline, computed from real order timestamps.
   const revenueTrend = useMemo(() => {
     const days = [];
+
     for (let i = 6; i >= 0; i--) {
       const d = new Date(now);
+
       d.setHours(0, 0, 0, 0);
       d.setDate(d.getDate() - i);
+
       days.push(d);
     }
+
     const totals = days.map((day) => {
       const next = new Date(day);
+
       next.setDate(next.getDate() + 1);
+
       return orders
-        .filter((o) => o.status === "delivered" && o.created_at)
+        .filter(
+          (o) =>
+            o.status?.toLowerCase() === "delivered" &&
+            o.created_at
+        )
         .filter((o) => {
           const c = new Date(o.created_at);
+
           return c >= day && c < next;
         })
-        .reduce((sum, o) => sum + (o.total_amount || 0), 0);
+        .reduce(
+          (sum, o) => sum + Number(o.total_amount || 0),
+          0
+        );
     });
+
     return { days, totals };
   }, [orders, now]);
 
   const sparkline = useMemo(() => {
-    const { totals } = revenueTrend;
+    const totals = revenueTrend.totals.map((value) =>
+      Number.isFinite(Number(value)) ? Number(value) : 0
+    );
+
     const max = Math.max(...totals, 1);
+
     const w = 260;
     const h = 56;
     const pad = 6;
-    const points = totals.map((v, i) => {
-      const x = totals.length > 1 ? (i / (totals.length - 1)) * w : 0;
-      const y = h - pad - (v / max) * (h - pad * 2);
+
+    const points = totals.map((value, i) => {
+      const x =
+        totals.length > 1
+          ? (i / (totals.length - 1)) * w
+          : 0;
+
+      const y =
+        h -
+        pad -
+        (value / max) * (h - pad * 2);
+
       return [x, y];
     });
+
     const linePath = points
-      .map((p, i) => `${i === 0 ? "M" : "L"}${p[0].toFixed(1)},${p[1].toFixed(1)}`)
+      .map(
+        (p, i) =>
+          `${i === 0 ? "M" : "L"}${p[0].toFixed(
+            1
+          )},${p[1].toFixed(1)}`
+      )
       .join(" ");
+
     const areaPath =
       `M0,${h} ` +
-      points.map((p) => `L${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ") +
+      points
+        .map(
+          (p) =>
+            `L${p[0].toFixed(1)},${p[1].toFixed(1)}`
+        )
+        .join(" ") +
       ` L${w},${h} Z`;
-    return { linePath, areaPath, w, h };
+
+    return {
+      linePath,
+      areaPath,
+      w,
+      h,
+    };
   }, [revenueTrend]);
 
   const recentOrders = useMemo(() => {
@@ -180,18 +238,18 @@ const Dashboard = () => {
     !date
       ? "—"
       : new Date(date).toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        });
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
 
   const formatTime = (date) =>
     !date
       ? "—"
       : new Date(date).toLocaleTimeString("en-IN", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        hour: "2-digit",
+        minute: "2-digit",
+      });
 
   const formatAmount = (amount) =>
     `₹${Number(amount || 0).toLocaleString("en-IN", {
