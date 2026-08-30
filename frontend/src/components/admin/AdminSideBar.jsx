@@ -35,8 +35,8 @@ const AdminSidebar = () => {
     } catch (error) {
       console.error("Admin logout error:", error);
     } finally {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      localStorage.removeItem("estele_admin_token");
+      localStorage.removeItem("estele_admin_user");
       navigate("/admin/login", { replace: true });
     }
   };
@@ -80,10 +80,9 @@ const AdminSidebar = () => {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 border-l-2 py-2.5 pl-4 pr-3 text-[14px] transition-colors ${
-                    isActive
-                      ? "border-l-[#A9822F] font-medium text-[#F7F5EF]"
-                      : "border-l-transparent text-[#F7F5EF]/55 hover:border-l-white/20 hover:text-[#F7F5EF]/90"
+                  `group flex items-center gap-3 border-l-2 py-2.5 pl-4 pr-3 text-[14px] transition-colors ${isActive
+                    ? "border-l-[#A9822F] font-medium text-[#F7F5EF]"
+                    : "border-l-transparent text-[#F7F5EF]/55 hover:border-l-white/20 hover:text-[#F7F5EF]/90"
                   }`
                 }
                 style={({ isActive }) => ({
