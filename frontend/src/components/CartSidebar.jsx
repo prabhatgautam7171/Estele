@@ -5,6 +5,7 @@ import {
   Plus,
   Trash2,
   ShoppingBag,
+  ShoppingCart,
 } from "lucide-react";
 
 import {
@@ -158,7 +159,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
           flex
           h-screen
           w-full
-          
+
           lg:max-w-[400px]
           flex-col
           bg-white
@@ -176,7 +177,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="flex h-[76px] shrink-0 items-center justify-between border-b border-[#ece7e2] px-6">
           <div className="flex items-center gap-3">
-            <ShoppingBag
+            <ShoppingCart
               size={20}
               strokeWidth={1.5}
               className="text-[#202020]"
@@ -248,7 +249,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
             !error &&
             (!cart || cart.items.length === 0) && (
               <div className="flex h-full flex-col items-center justify-center px-8 text-center">
-                <ShoppingBag
+                <ShoppingCart
                   size={42}
                   strokeWidth={1}
                   className="mb-5 text-[#c9c2bb]"

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({
+const adminApi = axios.create({
   baseURL: "https://estele-s2gj.onrender.com/api",
   headers: {
     Accept: "application/json",
@@ -8,8 +8,8 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+adminApi.interceptors.request.use((config) => {
+  const token = localStorage.getItem("estele_admin_token");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -18,4 +18,4 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export default api;
+export default adminApi;

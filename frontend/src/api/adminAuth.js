@@ -1,12 +1,25 @@
-import api from "./axios";
+import adminApi from "./adminAxios";
 
 export const adminLogin = async (email, password) => {
-  const response = await api.post("/admin/login", {
+  const response = await adminApi.post("/admin/login", {
     email,
     password,
   });
 
-  return response.data;
+  const data = response.data;
+
+  if (data.token) {
+    localStorage.setItem("estele_admin_token", data.token);
+  }
+
+  if (data.user) {
+    localStorage.setItem(
+      "estele_admin_user",
+      JSON.stringify(data.user)
+    );
+  }
+
+  return data;
 };
 
 export const adminRegister = async (
@@ -15,24 +28,42 @@ export const adminRegister = async (
   password,
   passwordConfirmation
 ) => {
-  const response = await api.post("/admin/register", {
+  const response = await adminApi.post("/admin/register", {
     name,
     email,
     password,
     password_confirmation: passwordConfirmation,
   });
 
-  return response.data;
+  const data = response.data;
+
+  if (data.token) {
+    localStorage.setItem("estele_admin_token", data.token);
+  }
+
+  if (data.user) {
+    localStorage.setItem(
+      "estele_admin_user",
+      JSON.stringify(data.user)
+    );
+  }
+
+  return data;
 };
 
 export const getCurrentAdmin = async () => {
-  const response = await api.get("/admin/user");
+  const response = await adminApi.get("/admin/user");
 
   return response.data;
 };
 
 export const adminLogout = async () => {
-  const response = await api.post("/admin/logout");
+  try {
+    const response = await adminApi.post("/admin/logout");
 
-  return response.data;
+    return response.data;
+  } finally {
+    localStorage.removeItem("estele_admin_token");
+    localStorage.removeItem("estele_admin_user");
+  }
 };

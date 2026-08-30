@@ -8,6 +8,11 @@ import ProductsDetails from "./pages/ProductsDetails";
 import Checkout from "./pages/Checkout";
 import AdminSignIn from "./components/admin/SignIn";
 import AdminRegister from "./components/admin/Register";
+import AdminLayout from "./components/admin/AdminLayout";
+import Dashboard from "./components/admin/Dashboard";
+import Orders from "./components/admin/Orders";
+import OrderDetails from "./components/admin/OrderDetails";
+import UserOrders from "./pages/Orders";
 
 function App() {
   return (
@@ -23,6 +28,20 @@ function App() {
           element={<AdminSignIn />}
         />
 
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+
+        <Route
+          path="/admin/orders"
+          element={<Orders />}
+        />
+
+        <Route
+          path="/admin/orders/:id"
+          element={<OrderDetails />}
+        />
+
         <Route
           path="/admin/register"
           element={<AdminRegister />}
@@ -34,6 +53,8 @@ function App() {
           element={<ProductsDetails />}
         />
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route path="/orders" element={<UserOrders/>} />
       </Routes>
 
     </BrowserRouter>

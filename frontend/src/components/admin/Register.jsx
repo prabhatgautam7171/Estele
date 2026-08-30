@@ -43,22 +43,14 @@ const handleSubmit = async (e) => {
       passwordConfirmation
     );
 
-    // If backend automatically logs admin in
+    // If backend automatically logs admin in,
+    // adminRegister() has already stored the token.
     if (data.token) {
-      localStorage.setItem("token", data.token);
-
-      if (data.user) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user)
-        );
-      }
-
-      navigate("/admin/login", { replace: true });
+      navigate("/admin/dashboard", { replace: true });
       return;
     }
 
-    // Registration successful, but login required
+    // Registration successful, login required
     setSuccess(
       data.message || "Admin account created successfully."
     );

@@ -21,19 +21,14 @@ const handleSubmit = async (e) => {
   setError("");
 
   try {
-    const data = await adminLogin(
+    await adminLogin(
       email.trim(),
       password
     );
 
-    localStorage.setItem("token", data.token);
-
-    if (data.user) {
-      localStorage.setItem(
-        "user",
-        JSON.stringify(data.user)
-      );
-    }
+    // adminLogin() already stores:
+    // estele_admin_token
+    // estele_admin_user
 
     navigate("/admin/dashboard", { replace: true });
   } catch (error) {

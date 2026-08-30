@@ -8,6 +8,15 @@ import {
   Menu,
   X,
   Lock,
+  LockKeyhole,
+  Briefcase,
+  ListOrderedIcon,
+  BookMarked,
+  ShoppingBasket,
+  ShoppingCart,
+  ParkingCircleOffIcon,
+  KeyRoundIcon,
+  ShieldKeyhole,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.webp";
@@ -119,12 +128,13 @@ const Navbar = ({ onCartClick }) => {
 
             <div className="flex gap-5 bg-[#DEC37D]  rounded-r-[16px] border border-[#dcae70] px-[17px] h-[40px]">
 
-              {/* Wishlist */}
+              {/* orders*/}
               <button
+                onClick={() => navigate("/orders")}
                 type="button"
                 className="relative flex items-center justify-center"
               >
-                <Heart
+                <ShoppingBag
                   size={20}
                   strokeWidth={1.5}
                   className="text-[#202020]"
@@ -137,17 +147,19 @@ const Navbar = ({ onCartClick }) => {
                 type="button"
                 className="relative flex items-center justify-center"
               >
-                <ShoppingBag
+                <ShoppingCart
                   size={20}
                   strokeWidth={1.5}
                   className="text-[#202020]"
                 />
-                 {  cartItems > 0 &&
-                <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
-                  {cartItems || 0}
-                </span>
-}
+                {cartItems > 0 &&
+                  <span className="absolute -right-[8px] -top-[8px] flex h-[21px] w-[21px] items-center justify-center rounded-full bg-[#cf718e] text-[11px] font-medium text-white">
+                    {cartItems || 0}
+                  </span>
+                }
               </button>
+
+
 
               {/* Account */}
               <button
@@ -162,17 +174,23 @@ const Navbar = ({ onCartClick }) => {
                 />
               </button>
 
+
               <button
                 onClick={() => navigate("/admin/login")}
                 type="button"
-                className="flex items-center justify-center"
+                className="flex items-center  justify-center "
               >
-                <Lock
+                <ShieldKeyhole
                   size={20}
                   strokeWidth={1.5}
                   className="text-[#202020]"
                 />
               </button>
+
+
+
+
+
 
             </div>
           </div>
@@ -278,7 +296,7 @@ const Navbar = ({ onCartClick }) => {
 
             {/* Cart */}
             <button
-            onClick={onCartClick}
+              onClick={onCartClick}
               type="button"
               aria-label="Shopping bag"
               className="relative flex items-center justify-center"
@@ -289,17 +307,17 @@ const Navbar = ({ onCartClick }) => {
                 className="text-[#202020]"
               />
 
-               {  cartItems > 0 &&
-                  <span className="absolute -right-[7px] -top-[7px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#cf718e] text-[9px] font-medium text-white">
+              {cartItems > 0 &&
+                <span className="absolute -right-[7px] -top-[7px] flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#cf718e] text-[9px] font-medium text-white">
                   {cartItems}
                 </span>
-               }
+              }
 
             </button>
 
             {/* Account */}
             <button
-               onClick={() => navigate("/signin")}
+              onClick={() => navigate("/signin")}
               type="button"
               aria-label="Account"
               className="items-center justify-center sm:flex"
